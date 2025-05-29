@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rhythmic Video Montage Creator</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.5/gsap.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1 id="main-title">Rhythmic Montage Generator</h1>
+        </header>
+
+        <form id="montage-form" enctype="multipart/form-data">
+            <div class="form-section" id="file-inputs">
+                <h2>Input Video Source</h2>
+                <div class="form-group">
+                    <label for="input_video_url">Video URL (e.g., YouTube, Vimeo):</label>
+                    <input type="url" id="input_video_url" name="input_video_url" placeholder="Enter video URL here">
+                </div>
+                <p class="center-text"><strong>OR</strong></p>
+                <div class="form-group">
+                    <label for="input_video_file">Upload Video File:</label>
+                    <input type="file" id="input_video_file" name="input_video_file" accept="video/*">
+                </div>
+                <hr>
+                <h2>Required Files</h2>
+                <div class="form-group">
+                    <label for="label_file">Audacity Label File (Rhythm Template, .txt):</label>
+                    <input type="file" id="label_file" name="label_file" accept=".txt" required>
+                </div>
+                <div class="form-group">
+                    <label for="audio_file">External Audio (Optional):</label>
+                    <input type="file" id="audio_file" name="audio_file" accept="audio/*">
+                </div>
+            </div>
+
+            <div classs="form-section" id="options">
+                <!-- Options remain the same -->
+                <h2>Montage Options</h2>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="resolution">Output Resolution (WxH):</label>
+                        <input type="text" id="resolution" name="resolution" value="1280x720" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="total_duration">Target Total Duration (seconds, 0 for auto):</label>
+                        <input type="number" id="total_duration" name="total_duration" value="0" min="0" step="0.1">
+                    </div>
+                    <div class="form-group">
+                        <label for="total_scenes">Target Total Scenes (0 for auto):</label>
+                        <input type="number" id="total_scenes" name="total_scenes" value="0" min="0" step="1">
+                    </div>
+                    <div class="form-group">
+                        <label for="min_scene_duration">Min Beat-Grouped Scene Duration (s):</label>
+                        <input type="number" id="min_scene_duration" name="min_scene_duration" value="0.6" min="0.1" step="0.1" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="audio_mode">Audio Mode (if external audio provided):</label>
+                        <select id="audio_mode" name="audio_mode">
+                            <option value="replace" selected>Replace Original Audio</option>
+                            <option value="mix">Mix with Original Audio</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            
+            <button type="submit" id="submit-button">Create Montage</button>
+        </form>
+
+        <div id="progress-section" style="display: none;">
+            <h2>Processing...</h2>
+            <div class="progress-bar-container">
+                <div id="progress-bar"></div>
+            </div>
+            <p id="progress-text">Starting...</p>
+            
+            <div id="video-player-container" style="display: none; margin-top: 20px;">
+                <h3>Generated Video:</h3>
+                <video id="output-video-player" width="100%" controls></video>
+            </div>
+
+            <div id="download-link-container" style="display: none; margin-top: 10px;">
+                <a href="#" id="download-link" class="button" download>Download Video</a>
+            </div>
+        </div>
+    </div>
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
