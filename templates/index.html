@@ -16,19 +16,36 @@
         <form id="montage-form" enctype="multipart/form-data">
             <div class="form-section" id="file-inputs">
                 <h2>Input Video Source</h2>
+                <p class="input-instruction">Please choose <strong>one</strong> video source below.</p>
+                
                 <div class="form-group">
-                    <label for="input_video_url">Video URL (e.g., YouTube, Vimeo):</label>
+                    <label for="input_video_url">1. Video URL (e.g., YouTube):</label>
                     <input type="url" id="input_video_url" name="input_video_url" placeholder="Enter video URL here">
                 </div>
+
                 <p class="center-text"><strong>OR</strong></p>
+
                 <div class="form-group">
-                    <label for="input_video_file">Upload Video File:</label>
+                    <label for="input_video_file">2. Upload Video File:</label>
                     <input type="file" id="input_video_file" name="input_video_file" accept="video/*">
                 </div>
+
+                <p class="center-text"><strong>OR</strong></p>
+
+                <div class="form-group">
+                    <label for="server_video_filename">3. Select a File from the Server:</label>
+                    <div class="server-file-selector">
+                        <select id="server_video_filename" name="server_video_filename">
+                            <option value="" selected>Loading server files...</option>
+                        </select>
+                        <button type="button" id="refresh-server-files" class="small-button" title="Refresh file list">↻</button>
+                    </div>
+                </div>
+
                 <hr>
                 <h2>Required Files</h2>
                 <div class="form-group">
-                    <label for="label_file">Audacity Label File (Rhythm Template, .txt):</label>
+                    <label for="label_file">Audacity Label File (.txt):</label>
                     <input type="file" id="label_file" name="label_file" accept=".txt" required>
                 </div>
                 <div class="form-group">
@@ -37,33 +54,14 @@
                 </div>
             </div>
 
-            <div classs="form-section" id="options">
-                <!-- Options remain the same -->
+            <div class="form-section" id="options">
                 <h2>Montage Options</h2>
                 <div class="form-grid">
-                    <div class="form-group">
-                        <label for="resolution">Output Resolution (WxH):</label>
-                        <input type="text" id="resolution" name="resolution" value="1280x720" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="total_duration">Target Total Duration (seconds, 0 for auto):</label>
-                        <input type="number" id="total_duration" name="total_duration" value="0" min="0" step="0.1">
-                    </div>
-                    <div class="form-group">
-                        <label for="total_scenes">Target Total Scenes (0 for auto):</label>
-                        <input type="number" id="total_scenes" name="total_scenes" value="0" min="0" step="1">
-                    </div>
-                    <div class="form-group">
-                        <label for="min_scene_duration">Min Beat-Grouped Scene Duration (s):</label>
-                        <input type="number" id="min_scene_duration" name="min_scene_duration" value="0.6" min="0.1" step="0.1" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="audio_mode">Audio Mode (if external audio provided):</label>
-                        <select id="audio_mode" name="audio_mode">
-                            <option value="replace" selected>Replace Original Audio</option>
-                            <option value="mix">Mix with Original Audio</option>
-                        </select>
-                    </div>
+                    <div class="form-group"><label for="resolution">Resolution (WxH):</label><input type="text" id="resolution" name="resolution" value="1280x720" required></div>
+                    <div class="form-group"><label for="total_duration">Target Duration (s, 0=auto):</label><input type="number" id="total_duration" name="total_duration" value="0" min="0" step="0.1"></div>
+                    <div class="form-group"><label for="total_scenes">Target Scenes (0=auto):</label><input type="number" id="total_scenes" name="total_scenes" value="0" min="0" step="1"></div>
+                    <div class="form-group"><label for="min_scene_duration">Min Scene Duration (s):</label><input type="number" id="min_scene_duration" name="min_scene_duration" value="0.6" min="0.1" step="0.1" required></div>
+                    <div class="form-group"><label for="audio_mode">Audio Mode:</label><select id="audio_mode" name="audio_mode"><option value="replace" selected>Replace</option><option value="mix">Mix</option></select></div>
                 </div>
             </div>
             
@@ -72,19 +70,10 @@
 
         <div id="progress-section" style="display: none;">
             <h2>Processing...</h2>
-            <div class="progress-bar-container">
-                <div id="progress-bar"></div>
-            </div>
+            <div class="progress-bar-container"><div id="progress-bar"></div></div>
             <p id="progress-text">Starting...</p>
-            
-            <div id="video-player-container" style="display: none; margin-top: 20px;">
-                <h3>Generated Video:</h3>
-                <video id="output-video-player" width="100%" controls></video>
-            </div>
-
-            <div id="download-link-container" style="display: none; margin-top: 10px;">
-                <a href="#" id="download-link" class="button" download>Download Video</a>
-            </div>
+            <div id="video-player-container" style="display: none;"><video id="output-video-player" width="100%" controls></video></div>
+            <div id="download-link-container" style="display: none;"><a href="#" id="download-link" class="button" download>Download Video</a></div>
         </div>
     </div>
     <script src="{{ url_for('static', filename='script.js') }}"></script>
